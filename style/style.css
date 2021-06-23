@@ -11,40 +11,35 @@ td {
 
 .black {
     background: black;
-    margin: auto;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    
-    z-index: -1;
 }
 
 .white {
     background: grey;
-    margin: auto;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    
-    z-index: -1;
 }
 
 .select_checker {
     background: green;
 }
 
+.select_checker_true {
+    background: #c7c7c7;
+}
 #game > table{
     margin: 0 auto;
 }
+
+
+
+.cell {
+    background: #dfdfdf;
+    width: 25px;
+    height: 25px;
+  }
+  
+.blue {
+    background: blue;
+  }
+  
+.red {
+    background: red;
+  }
