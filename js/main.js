@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 
     let movePlayer = document.querySelector('#player')
-    movePlayer.innerHTML = activeTeam % 2 ? "Черные" : "Белые";
+    movePlayer.innerHTML = "Первыми ходят " + (activeTeam % 2 ? "черные" : "белые");
 
 
     // Строим доску и фигуры на ней
@@ -97,7 +97,7 @@ $(document).ready(function() {
             activeElementCoords = null;
             turnIsActive = false;
             CheckEnd();
-            movePlayer.innerHTML = activeTeam % 2 ? "Черные" : "Белые";
+            movePlayer.innerHTML = "Ходят " + (activeTeam % 2 ? "черные" : "белые");
         }
     }
     //
@@ -105,8 +105,7 @@ $(document).ready(function() {
         for(let i = 0; i < board.length; i++) {
             for(let j = 0; j < board[i].length; j++) {
                 if(checkTurnValidity(i, j)) {
-                    if (!board[i][j] || !board[row][col])
-                    {
+                    if (!board[i][j] || !board[row][col]) {
                         let element = document.querySelector(`[data-row="${i}"][data-col="${j}"]`)
                         element.classList.add(GAME_CSS_CLASS.true_move);
                     }
