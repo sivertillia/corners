@@ -2,7 +2,7 @@ $(document).ready(function() {
  
     let board = [
         [2,2,2,0,0,0,0,0],
-        [2,2,2,0,0,0,0,0],
+        [2,2,0,2,0,0,0,0],
         [2,2,2,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
@@ -124,8 +124,8 @@ $(document).ready(function() {
                 if (board[i][j] == 2) tempW.push([i, j]);
             }
         }
-        if (Comparison_Of_Arrays(tempB, posWhite)) alert("win: Black")
-        if (Comparison_Of_Arrays(tempW, posBlack)) alert("win: White")
+        if (Comparison_Of_Arrays_2(tempB, posWhite)) alert("win: Black")
+        if (Comparison_Of_Arrays_2(tempW, posBlack)) alert("win: White")
     }
     
     // проверяем можна ли сделать ход
@@ -135,7 +135,10 @@ $(document).ready(function() {
         return validity
     }
     function Comparison_Of_Arrays(arr1, arr2) {
-        return  arr1.length === arr2.length && arr1.every((_, i) => arr1[i] === arr2[i]);
+        return arr1.length === arr2.length && arr1.every((_, i) => arr1[i] === arr2[i]);
+    }
+    function Comparison_Of_Arrays_2(arr1, arr2) {
+        return arr1.length === arr2.length && arr1.every((_, i) => Comparison_Of_Arrays(arr1[i], arr2[i]));
     }
 
     // выводим ошибку если елемент на елемент
