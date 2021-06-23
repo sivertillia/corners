@@ -6,24 +6,28 @@ td {
     width: 50px;
     height: 50px;
     position: relative;
+    background: #ffd4ae;
     /* border: 1px solid black; */
 }
+
 
 .black {
     background: black;
 }
 
 .white {
-    background: grey;
-}
-
-.select_checker {
-    background: green;
+    background: white;
 }
 
 .select_checker_true {
-    background: #c7c7c7;
+    opacity: 0.5;
 }
+
+.select_checker {
+    opacity: 0.7;
+}
+
+
 #game > table{
     margin: 0 auto;
 }
@@ -43,3 +47,20 @@ td {
 .red {
     background: red;
   }
+
+
+
+.info_game {
+    width: 450px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.info_game > h1 {
+    text-align: center;
+}
+.info_game > button {
+    display: block;
+    margin: 0 auto;
+    width: 120px;
+    height: 40px;
+}
