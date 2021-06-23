@@ -44,7 +44,7 @@ $(document).ready(function() {
     };
     $("#game")[0].appendChild(grid);
     
-    //Click element
+    //Обработчик нажатий
     grid.addEventListener('click', ClickChecker);
     function ClickChecker(event) {               
         const target = event.target;
@@ -52,27 +52,23 @@ $(document).ready(function() {
         const row = +target.dataset.row;
         const col = +target.dataset.col;
         const cellOccupied = board[row][col];
-        console.log('pos: ',cellOccupied)
-        console.log('ClickChecker AT:', activeTeam);
 
         if (!cellOccupied && !turnIsActive) return;
-        if (cellOccupied && turnIsActive) return doSomeAction(target, row, col)
+        if (cellOccupied && turnIsActive) return doSomeAction(row, col);
         if (cellOccupied && !turnIsActive) return moveChecker(target, row, col);
-        return FinishMove(target, row, col, cellOccupied);
+        return FinishMove(target, row, col);
     };
-
+    // Начинаем перемещение
     function moveChecker(element, row, col) {
-        if (turnIsActive) return console.log('turnIsActive:true');
+        if (turnIsActive) return;
         turnIsActive = true;
         activeTeam = board[row][col]
-        console.log('MoveCheker AT:', activeTeam);
         activeElementCoords = [row, col];
         board[row][col] = 0;
         element.classList.remove(activeTeam % 2 ? TEAM.black : TEAM.white);
-        
     }
-
-    function FinishMove(element, row, col, cellOccupied) {
+    // Заканчуем перемещение
+    function FinishMove(element, row, col) {
         if(checkTurnValidity(row, col)) {
             board[row][col] = activeTeam;
             element.classList.add(activeTeam % 2 ? TEAM.black : TEAM.white);
@@ -84,6 +80,8 @@ $(document).ready(function() {
         }
     }
 
+
+    // сохраняем позиции для проверки кто выйграл
     function SavePos() {
         for (let i=0; board.length > i; i++) {
             for (let j=0; board[i].length > j; j++) {
@@ -93,6 +91,8 @@ $(document).ready(function() {
         }
     }
 
+    
+    // проверяем конец ли игры
     function CheckEnd() {
         let tempB = []
         let tempW = []
@@ -105,14 +105,16 @@ $(document).ready(function() {
         if (""+tempB==""+posWhite) console.log("win: Black")
         if (""+tempW==""+posBlack) console.log("win: White")
     }
-
+    
+    // проверяем можна ли сделать ход
     function checkTurnValidity(row, col) {
         const [rowStart, colStart] = activeElementCoords; 
         const validity = DIAGONAL_TURNS_POSSIBLE ?  Math.abs(colStart - col) <= 1 && Math.abs(rowStart - row) <= 1:  Math.abs(colStart - col) + Math.abs(rowStart - row) <= 1
         return validity
     }
 
-    function doSomeAction(element, row, col) {
+    // выводим ошибку если елемент на елемент
+    function doSomeAction(row, col) {
         const targetTeam = board[row][col]
         console.log('Something just happened!');
         console.log('activeTeam', activeTeam)
