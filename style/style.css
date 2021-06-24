@@ -12,7 +12,6 @@ td {
 
 
 
-
 #game > table tr:nth-child(odd) td:nth-child(even) {
 	background-color: #cccccc;
 }	
@@ -78,4 +77,8 @@ td {
     width: 120px;
     height: 40px;
     color: #a30000;
+}
+
+.gameOver {
+    color: green;
 }
