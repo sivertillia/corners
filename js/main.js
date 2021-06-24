@@ -14,11 +14,11 @@ $(document).ready(function() {
     // 2 = white player
 
     // Css class
-    GAME_CSS_CLASS = {
+    let GAME_CSS_CLASS = {
         black: 'black',
         white: 'white',
         select: 'select_checker',
-        false_move: 'select_checker_false'
+        false_move: 'select_checker_false',
     }
 
     // Global variable
@@ -31,8 +31,8 @@ $(document).ready(function() {
     let posWhite = [];
 
 
-    let info_game = document.querySelector('#info_game')
-    info_game.innerHTML = "Первыми ходят " + (activeTeam % 2 ? "черные" : "белые");
+    let info_game = document.querySelector('#info_game');
+    displayMove();
 
 
     // Create board and checker
@@ -55,7 +55,7 @@ $(document).ready(function() {
             tr.appendChild(td);
         }
         grid.appendChild(tr);
-    };
+    }
     $("#game")[0].appendChild(grid);
     
     //Event click
@@ -73,7 +73,7 @@ $(document).ready(function() {
                 return finishMoveChecker(target, row, col); // Second click
             }
         }
-    };
+    }
 
     // Start Move
     function startMoveChecker(element, row, col) {
@@ -96,7 +96,7 @@ $(document).ready(function() {
             if (!arraysAreEqual([row, col], activeElementCoords)) activeTeam = activeTeam % 2 ? 2 : 1; // Check  move
             activeElementCoords = null;
             turnIsActive = false;
-            info_game.innerHTML = "Ходят " + (activeTeam % 2 ? "черные" : "белые");
+            displayMove();
             checkEnd();
         }
     }
@@ -125,6 +125,11 @@ $(document).ready(function() {
         }
         if (twoDimensionalArraysAreEqual(tempB, posWhite)) displayWinPlayer("черные");
         if (twoDimensionalArraysAreEqual(tempW, posBlack)) displayWinPlayer("белые");
+    }
+
+    function displayMove() {
+        let img = '<img src="img/'+(activeTeam % 2 ? "black" : "white")+'.png" alt="move">'
+        info_game.innerHTML = "Ходят " + img;
     }
     
     // Display Winner Player and Delete Event click

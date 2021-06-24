@@ -71,6 +71,11 @@ td {
 .info_game > h1 {
     text-align: center;
 }
+.info_game img {
+    width: 40px;
+    width: 40px;
+    vertical-align: middle;
+}
 .info_game > button {
     display: block;
     margin: 0 auto;
