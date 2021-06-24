@@ -59,8 +59,8 @@ $(document).ready(function() {
     $("#game")[0].appendChild(grid);
     
     //Event click
-    grid.addEventListener('click', ClickChecker);
-    function ClickChecker(event) {               
+    grid.addEventListener('click', clickChecker);
+    function clickChecker(event) {               
         const target = event.target;
         if (target.tagName == 'TD') { // Check click
             const row = +target.dataset.row;
@@ -69,43 +69,43 @@ $(document).ready(function() {
 
             if (cellOccupied == activeTeam || cellOccupied==0) {
                 if ((!cellOccupied && !turnIsActive) || (cellOccupied && turnIsActive)) return;
-                if (cellOccupied && !turnIsActive) return StartMoveChecker(target, row, col); //First click
-                return FinishMoveChecker(target, row, col); // Second click
+                if (cellOccupied && !turnIsActive) return startMoveChecker(target, row, col); //First click
+                return finishMoveChecker(target, row, col); // Second click
             }
         }
     };
 
     // Start Move
-    function StartMoveChecker(element, row, col) {
+    function startMoveChecker(element, row, col) {
         if (turnIsActive) return;
         turnIsActive = true;
         activeTeam = board[row][col]
         activeElementCoords = [row, col];
         selectElement = element;
-        DisplayPossibleMove(row, col)
+        displayPossibleMove(row, col)
         board[row][col] = 0;
     }
 
     // Finish Move
-    function FinishMoveChecker(element, row, col) {
+    function finishMoveChecker(element, row, col) {
         if(checkTurnValidity(row, col)) {
             board[row][col] = activeTeam;
             selectElement.classList.remove(activeTeam % 2 ? GAME_CSS_CLASS.black : GAME_CSS_CLASS.white);
             element.classList.add(activeTeam % 2 ? GAME_CSS_CLASS.black : GAME_CSS_CLASS.white);
             document.querySelectorAll('table td').forEach(n => n.classList.remove(GAME_CSS_CLASS.false_move))
-            if (!Comparison_Of_Arrays([row, col], activeElementCoords)) activeTeam = activeTeam % 2 ? 2 : 1; // Check  move
+            if (!arraysAreEqual([row, col], activeElementCoords)) activeTeam = activeTeam % 2 ? 2 : 1; // Check  move
             activeElementCoords = null;
             turnIsActive = false;
             info_game.innerHTML = "Ходят " + (activeTeam % 2 ? "черные" : "белые");
-            CheckEnd();
+            checkEnd();
         }
     }
 
     // Display Possible Move
-    function DisplayPossibleMove(row, col) {
+    function displayPossibleMove(row, col) {
         for(let i = 0; i < board.length; i++) {
             for(let j = 0; j < board[i].length; j++) {
-                if(!checkTurnValidity(i, j) && !Comparison_Of_Arrays([i, j], [row, col])) {
+                if(!checkTurnValidity(i, j) && !arraysAreEqual([i, j], [row, col])) {
                     let element = document.querySelector(`[data-row="${i}"][data-col="${j}"]`)
                     element.classList.add(GAME_CSS_CLASS.false_move);
                 }
@@ -114,7 +114,7 @@ $(document).ready(function() {
     }
     
     // Checked End Game
-    function CheckEnd() {
+    function checkEnd() {
         let tempB = [];
         let tempW = [];
         for(let i = 0; i < board.length; i++) {
@@ -123,31 +123,31 @@ $(document).ready(function() {
                 if (board[i][j] == 2) tempW.push([i, j]);
             }
         }
-        if (Comparison_Of_Arrays_2(tempB, posWhite)) DisplayWinPlayer("черные")
-        if (Comparison_Of_Arrays_2(tempW, posBlack)) DisplayWinPlayer("белые")
+        if (twoDimensionalArraysAreEqual(tempB, posWhite)) displayWinPlayer("черные");
+        if (twoDimensionalArraysAreEqual(tempW, posBlack)) displayWinPlayer("белые");
     }
     
     // Display Winner Player and Delete Event click
-    function DisplayWinPlayer(win) {
+    function displayWinPlayer(win) {
         info_game.innerHTML = "Победили " + win + "!";
-        info_game.classList.add('gameOver')
-        grid.removeEventListener('click', ClickChecker);
+        info_game.classList.add('gameOver');
+        grid.removeEventListener('click', clickChecker);
     }
 
     // Check Turn Validity
     function checkTurnValidity(row, col) {
         const [rowStart, colStart] = activeElementCoords; 
-        const validity = DIAGONAL_MOVE_POSSIBLE ?  Math.abs(colStart - col) <= 1 && Math.abs(rowStart - row) <= 1:  Math.abs(colStart - col) + Math.abs(rowStart - row) <= 1
+        const validity = DIAGONAL_MOVE_POSSIBLE ?  Math.abs(colStart - col) <= 1 && Math.abs(rowStart - row) <= 1:  Math.abs(colStart - col) + Math.abs(rowStart - row) <= 1;
         if (!board[row][col]) return validity;
     }
 
     // Comparison of 2 arrays
-    function Comparison_Of_Arrays(arr1, arr2) {
+    function arraysAreEqual(arr1, arr2) {
         return arr1.length === arr2.length && arr1.every((_, i) => arr1[i] === arr2[i]);
     }
 
     // Comparison of 2 two-dimensional arrays
-    function Comparison_Of_Arrays_2(arr1, arr2) {
-        return arr1.length === arr2.length && arr1.every((_, i) => Comparison_Of_Arrays(arr1[i], arr2[i]));
+    function twoDimensionalArraysAreEqual(arr1, arr2) {
+        return arr1.length === arr2.length && arr1.every((_, i) => arraysAreEqual(arr1[i], arr2[i]));
     }
 });
