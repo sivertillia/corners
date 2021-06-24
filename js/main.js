@@ -15,7 +15,7 @@ $(document).ready(function() {
         black: 'black',
         white: 'white',
         select: 'select_checker',
-        true_move: 'select_checker_true'
+        false_move: 'select_checker_false'
     }
 
     // обьявляем глобальные переменные
@@ -81,9 +81,8 @@ $(document).ready(function() {
         activeTeam = board[row][col]
         activeElementCoords = [row, col];
         selectElement = element;
-        ViewMove(row, col)
+        ViewMove(element, row, col)
         board[row][col] = 0;
-        element.classList.add(GAME_CSS_CLASS.select);
     }
     // Заканчуем перемещение
     function FinishMove(element, row, col) {
@@ -91,8 +90,7 @@ $(document).ready(function() {
             board[row][col] = activeTeam;
             selectElement.classList.remove(activeTeam % 2 ? GAME_CSS_CLASS.black : GAME_CSS_CLASS.white);
             element.classList.add(activeTeam % 2 ? GAME_CSS_CLASS.black : GAME_CSS_CLASS.white);
-            selectElement.classList.remove(GAME_CSS_CLASS.select);
-            document.querySelectorAll('table td').forEach(n => n.classList.remove(GAME_CSS_CLASS.true_move))
+            document.querySelectorAll('table td').forEach(n => n.classList.remove(GAME_CSS_CLASS.false_move))
             if (!Comparison_Of_Arrays([row, col], activeElementCoords))activeTeam = activeTeam % 2 ? 2 : 1; // проверяем был ли сдвиг
             activeElementCoords = null;
             turnIsActive = false;
@@ -101,13 +99,14 @@ $(document).ready(function() {
         }
     }
     //
-    function ViewMove(row, col) {
+    function ViewMove(cuurentElement, row, col) {
         for(let i = 0; i < board.length; i++) {
             for(let j = 0; j < board[i].length; j++) {
-                if(checkTurnValidity(i, j)) {
-                    if (!board[i][j] || !board[row][col]) {
+                if(!checkTurnValidity(i, j)) {
+                    if (!Comparison_Of_Arrays([i, j], [row, col])) {
+                    
                         let element = document.querySelector(`[data-row="${i}"][data-col="${j}"]`)
-                        element.classList.add(GAME_CSS_CLASS.true_move);
+                        element.classList.add(GAME_CSS_CLASS.false_move);
                     }
                 }
             }
@@ -132,7 +131,7 @@ $(document).ready(function() {
     function checkTurnValidity(row, col) {
         const [rowStart, colStart] = activeElementCoords; 
         const validity = DIAGONAL_TURNS_POSSIBLE ?  Math.abs(colStart - col) <= 1 && Math.abs(rowStart - row) <= 1:  Math.abs(colStart - col) + Math.abs(rowStart - row) <= 1
-        return validity
+        if (!board[row][col]) return validity;
     }
     function Comparison_Of_Arrays(arr1, arr2) {
         return arr1.length === arr2.length && arr1.every((_, i) => arr1[i] === arr2[i]);

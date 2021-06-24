@@ -11,16 +11,32 @@ td {
 }
 
 
-.black {
-    background: black;
+
+
+#game > table tr:nth-child(odd) td:nth-child(even) {
+	background-color: #cccccc;
+}	
+#game > table tr:nth-child(even) td:nth-child(odd) {
+	background-color: #cccccc;;
 }
+.black {
+    background-image: url(../img/black.png) !important;
+    background-size: 45px 45px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 
 .white {
-    background: white;
+    background-image: url(../img/white.png) !important;
+    background-size: 45px 45px;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.select_checker_true {
-    opacity: 0.5;
+.select_checker_false {
+    /* background: #cccccc; */
+    opacity: 0.3;
 }
 
 .select_checker {
@@ -31,8 +47,6 @@ td {
 #game > table{
     margin: 0 auto;
 }
-
-
 
 .cell {
     background: #dfdfdf;
